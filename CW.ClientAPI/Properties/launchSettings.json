@@ -1,0 +1,42 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:51486/",
+      "sslPort": 44352
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "cwClientApi",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "DEV_CWClientAP": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "DEV_CWClientAPI",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_DETAILEDERRORS": "1"
+      },
+      "applicationUrl": "http://localhost:5001",
+      "sslPort": 5001
+    },
+    "PROD_CWClientAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "PROD_ClientAPI",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "http://localhost:5000",
+      "sslPort": 5000
+    }
+  }
+}
