@@ -31,7 +31,7 @@ namespace CW.ClientAPI.Profiles
             .ForMember(dest => dest.WriteOrgGroupID, opt => opt.MapFrom(src => src.WriteOrgGroupID))
             .ForMember(dest => dest.CreatedFormID, opt => opt.MapFrom(src => src.CreatedFormID))
             .ForMember(dest => dest.LastModifiedFormID, opt => opt.MapFrom(src => src.LastModifiedFormID))
-            .ForMember(dest => dest.ImageFileBinary, opt => opt.MapFrom(src => src.ImageFileBinary))
+            .ForMember(dest => dest.ImageFileBinary, opt => opt.MapFrom(src => src.ImageBase64))
             .ForMember(dest => dest.UserStamp, opt => opt.MapFrom(src => src.UserStamp))
             .ForMember(dest => dest.DateTimeStamp, opt => opt.MapFrom(src => src.DateTimeStamp))
             .ReverseMap()
@@ -121,7 +121,29 @@ namespace CW.ClientAPI.Profiles
            .ForMember(dest => dest.MSGID, opt => opt.MapFrom(src => src.MSGID))
            .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content));
 
-            #endregion    
+            #endregion
+
+            #region Fortune Content
+
+            CreateMap<CW.ClientLibrary.Data.FSP_CW_FHIR_Account_Fetch, FSP_CW_FHIR_Account_Fetch_Model>()
+            .ForMember(dest => dest.JSONMsg, opt => opt.MapFrom(src => src.JSONMsg));
+
+
+            CreateMap<FSP_CW_FHIR_Account_Fetch_Model, CW.ClientLibrary.Data.FSP_CW_FHIR_Account_Fetch>()
+              .ForMember(dest => dest.JSONMsg, opt => opt.MapFrom(src => src.JSONMsg));
+
+            CreateMap<FSP_CW_FHIR_Organization_Fetch, FSP_CW_FHIR_Organization_Fetch_Model>()
+            .ForMember(dest => dest.JSONMsg, opt => opt.MapFrom(src => src.JSONMsg));
+
+
+            CreateMap<FSP_CW_FHIR_Organization_Fetch_Model, FSP_CW_FHIR_Organization_Fetch>()
+              .ForMember(dest => dest.JSONMsg, opt => opt.MapFrom(src => src.JSONMsg));
+
+            #endregion
         }
+    }
+
+    internal class FSP_CW_FHIR_Account_Fetch
+    {
     }
 }

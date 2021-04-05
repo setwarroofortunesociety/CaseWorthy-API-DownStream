@@ -15,21 +15,27 @@ namespace CW.ClientLibrary.DbContexts
             :base(options)
         {
         }
+
+        //Tables
         public virtual DbSet<MSG_Interval> MSG_Intervals { get; set; }
         public virtual DbSet<MSG_Tracker> MSG_Trackers { get; set; }
         public virtual DbSet<MSG_Content> MSG_Contents { get; set; }
         public virtual DbSet<ClientPhoto> MSG_ClientPhotos { get; set; }
 
+        //Store Procedures
+        public virtual DbSet<FSP_CW_FHIR_Organization_Fetch> MSG_Organization { get; set; }
+        public virtual DbSet<FSP_CW_FHIR_Account_Fetch> MSG_Account { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //specify default schema
-            modelBuilder.HasDefaultSchema("cw");
+            //modelBuilder.HasDefaultSchema("cw");
 
             modelBuilder.Entity<MSG_Content>(entity =>
             {
                 entity.HasKey(e => e.ContentID);
 
-                entity.ToTable("MSG_Content");
+                entity.ToTable("MSG_Content","cw");
                 
                 entity.HasOne<MSG_Tracker>(m => m.MsgTracker).WithOne().HasForeignKey<MSG_Content>(FK => FK.MSGID);
 
@@ -46,7 +52,7 @@ namespace CW.ClientLibrary.DbContexts
             {
                 entity.HasKey(e => e.IntervalID);
 
-                entity.ToTable("MSG_Interval");
+                entity.ToTable("MSG_Interval","cw");
 
                 entity.Property(e => e.IntervalID).HasColumnName("IntervalID");
 
@@ -79,7 +85,7 @@ namespace CW.ClientLibrary.DbContexts
                 entity.HasKey(e => e.MSGID);
 
 
-                entity.ToTable("MSG_Tracker");
+                entity.ToTable("MSG_Tracker","cw");
 
                 entity.Property(e => e.MSGID).HasColumnName("MSGID");
 
@@ -128,7 +134,7 @@ namespace CW.ClientLibrary.DbContexts
             {
                 entity.HasKey(e => e.ClientPhotoID);
 
-                entity.ToTable("ClientPhoto");
+                entity.ToTable("ClientPhoto", "cw");
 
                 entity.Property(e => e.ClientPhotoID).HasColumnName("ClientPhotoID");
 
@@ -176,7 +182,7 @@ namespace CW.ClientLibrary.DbContexts
 
                 entity.Property(e => e.LastModifiedFormID).HasColumnName("LastModifiedFormID");
                 
-                entity.Property(e => e.ImageFileBinary)
+                entity.Property(e => e.ImageBase64)
                     .IsUnicode(false);
 
                 entity.Property(e => e.LegacyID).HasColumnName("LegacyID");
@@ -187,6 +193,25 @@ namespace CW.ClientLibrary.DbContexts
 
             });
 
+            modelBuilder.Entity<FSP_CW_FHIR_Organization_Fetch>(entity =>
+            {
+
+                entity.HasNoKey();
+
+                entity.Property(e => e.JSONMsg);
+
+
+            });
+
+            modelBuilder.Entity<FSP_CW_FHIR_Account_Fetch>(entity =>
+            {
+
+                entity.HasNoKey();
+
+                entity.Property(e => e.JSONMsg);
+
+
+            });
 
         }
 

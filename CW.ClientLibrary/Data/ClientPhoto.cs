@@ -28,7 +28,7 @@ namespace CW.ClientLibrary.Data
         public int? WriteOrgGroupID { get; set; }
         public int? CreatedFormID { get; set; }
         public int? LastModifiedFormID { get; set; }
-        public string ImageFileBinary { get; set; }
+        public string ImageBase64 { get; set; }
         public int? LegacyID { get; set; }
         public string UserStamp  { get; set; }
         public DateTime? DateTimeStamp { get; set; }

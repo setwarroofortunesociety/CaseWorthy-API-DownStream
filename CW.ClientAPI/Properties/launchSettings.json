@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/CW.ClientAPI",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:51486/",
       "sslPort": 44352
@@ -10,23 +14,34 @@
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
-      "commandName": "IISExpress",
+      "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "cwClientApi",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "DEV_CWClientAP": {
+    "LOCALCWClientAPI": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "DEV_CWClientAPI",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_DETAILEDERRORS": "1"
+        "ASPNETCORE_DETAILEDERRORS": "1",
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5001",
       "sslPort": 5001
+    },
+    "DEV_CWClientAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "DEV_CWClientAPI",
+      "environmentVariables": {
+        "ASPNETCORE_DETAILEDERRORS": "1",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://10.0.1.17:8083",
+      "sslPort": 8083
     },
     "PROD_CWClientAPI": {
       "commandName": "Project",

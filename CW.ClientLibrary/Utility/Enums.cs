@@ -16,6 +16,9 @@ namespace CW.ClientLibrary.Utility
             ClientPhoto,
             ClientEnrollment,
             ClientTrackUsage,
+            User,
+            Account,
+            Organization,
             Other,
         }
         public enum Action
@@ -31,6 +34,7 @@ namespace CW.ClientLibrary.Utility
             Pending = 0,
             Completed = 1,
             Completed_No_Data = 2,
+            OnDemand = 99,
             Error = -1,
         }
 

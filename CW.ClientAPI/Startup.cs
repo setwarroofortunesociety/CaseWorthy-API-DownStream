@@ -61,7 +61,7 @@ namespace CW.ClientAPI
             string secretKey = string.Empty;
 
             //If development environment
-            if (_env.IsDevelopment() )
+            if (_env.IsDevelopment())
             {
                 uriString = Configuration.GetSection("DevCaseWorthySettings:AppEndPoint:Train").Value;
                 dbString = Configuration.GetSection("DevCaseWorthySettings:Data:FIX_DEV").Value;
@@ -69,17 +69,23 @@ namespace CW.ClientAPI
                 secretKey = Configuration.GetSection("DevCaseWorthySettings:SecurityAccess:SecretKey").Value;
 
             }
-            else if(_env.IsProduction())
-                {
-                    uriString = Configuration.GetSection("ProdCaseWorthySettings:AppEndPoint:Production").Value;
-                    dbString = Configuration.GetSection("ProdCaseWorthySettings:Data:FIX").Value;
-                    accessKey = Configuration.GetSection("ProdCaseWorthySettings:SecurityAccess:AccessKey").Value;
-                    secretKey = Configuration.GetSection("ProdCaseWorthySettings:SecurityAccess:SecretKey").Value;
+            else if (_env.IsProduction())
+            {
+                uriString = Configuration.GetSection("ProdCaseWorthySettings:AppEndPoint:Production").Value;
+                dbString = Configuration.GetSection("ProdCaseWorthySettings:Data:FIX").Value;
+                accessKey = Configuration.GetSection("ProdCaseWorthySettings:SecurityAccess:AccessKey").Value;
+                secretKey = Configuration.GetSection("ProdCaseWorthySettings:SecurityAccess:SecretKey").Value;
+            }
+            else if (_env.IsStaging())
+            {
+                uriString = Configuration.GetSection("ProdCaseWorthySettings:AppEndPoint:ETL").Value;
+                dbString = Configuration.GetSection("ProdCaseWorthySettings:Data:FIX").Value;
+                accessKey = Configuration.GetSection("ProdCaseWorthySettings:SecurityAccess:AccessKey").Value;
+                secretKey = Configuration.GetSection("ProdCaseWorthySettings:SecurityAccess:SecretKey").Value;
             }
 
-
-            //functionality to inject IOptions<T?
-            services.AddOptions();
+                //functionality to inject IOptions<T?
+                services.AddOptions();
 
             //get the email server setting in app settings file
             services.Configure<EmailSettingsModel>(Configuration.GetSection("EmailSettings"));
@@ -137,6 +143,7 @@ namespace CW.ClientAPI
             services.AddScoped<IInterval, Interval>();
             services.AddScoped<ITracker, Tracker>();
             services.AddScoped<IContent, Content>();
+            services.AddScoped<IFortuneContent, FortuneContent>();
             services.AddScoped<IClientImage, ClientImage>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ICaseWorthyService, CaseWorthyService>();

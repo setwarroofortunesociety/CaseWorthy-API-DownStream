@@ -262,6 +262,13 @@ namespace CW.ClientAPI.Controllers
                             {
                                 hasProcessed = "Processed Successfully";
                             }
+                            break;
+                        case Enums.MSGType.Organization: case Enums.MSGType.Account:
+                            bool hasFortuneContentProcessed =  _entityContent.AddFortuneEntityContent(itemPickedUp);
+                            if (hasFortuneContentProcessed == true)
+                            {
+                                hasProcessed = "Processed Successfully";
+                            }
                             //else
                             //{
                             //    string message = String.Format(CultureInfo.CurrentCulture, "{0}. Interval Id {1}", hasProcessed, intervalID);

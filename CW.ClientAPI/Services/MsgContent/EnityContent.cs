@@ -21,10 +21,12 @@ namespace CW.ClientAPI.Services.MsgContent
     public class EntityContent
     {
         private readonly IContent _content;
+        private readonly IFortuneContent _fortuneContent;
         private readonly IMapper _mapper;
         private readonly ILogger<EntityContent> _logger;
         private readonly ICaseWorthyService _caseWorthyService;
         private readonly ITracker _tracker;
+     
 
         //Initialized
         private bool hasSaved = false;
@@ -37,12 +39,14 @@ namespace CW.ClientAPI.Services.MsgContent
      
 
         public EntityContent(IContent content,
+                      IFortuneContent fortunecontent,
                       ITracker tracker,
                       ICaseWorthyService caseWorthyService,
                       IMapper mapper,
                       ILogger<EntityContent> logger)
         {
             _content = content;
+            _fortuneContent = fortunecontent;
             _tracker = tracker;
             _caseWorthyService = caseWorthyService;
             _mapper = mapper;
@@ -86,6 +90,11 @@ namespace CW.ClientAPI.Services.MsgContent
                         //client TrackUsage
                         entityType = trackerRec.EntityType;
                         entityID = (int)trackerRec.SubEntityID2;
+                        break;
+                    case Enums.MSGType.User:
+                        //User
+                        entityType = trackerRec.EntityType;
+                        entityID = (int)trackerRec.EntityID;
                         break;
                 }
 
@@ -137,6 +146,8 @@ namespace CW.ClientAPI.Services.MsgContent
                             || (clientEntityContent.Contains("{\"ClientDemographic\":[]}"))
                                 || (clientEntityContent.Contains("{\"ClientEnrollment\":[]}"))
                                     || (clientEntityContent.Contains("{\"ClientTrackUsage\":[]}"))
+                                        || (clientEntityContent.Contains("{\"UserDemographic\":[]}"))
+
                     )
                 {
                    
@@ -186,6 +197,96 @@ namespace CW.ClientAPI.Services.MsgContent
 
                 _logger.LogError("{0} \n\n Exception:\n {1}.\n StackTrace:\n{2}", nameof(EntityContent), ex.InnerException, ex.StackTrace);
                 
+                return hasSaved = false;
+
+            }
+        }
+
+        public  bool  AddFortuneEntityContent(MSG_Tracker trackerRec)
+        {
+
+            try
+            {
+            
+                // assign values
+                var msgType = (Enums.MSGType)Enum.Parse(typeof(Enums.MSGType), trackerRec.EntityType);
+                string OrgAcctEntityContent =string.Empty;
+
+                //Step 1 get the entity content
+                _logger.LogInformation("REQUESTING {0} content msg Type {1} msg ID {2}", nameof(AddFortuneEntityContent), msgType, trackerRec.MSGID);
+
+                switch (msgType)
+                {
+                    case Enums.MSGType.Account:
+                        //Account
+                        if (trackerRec.EntityID.HasValue)
+                        {
+                            OrgAcctEntityContent = _fortuneContent.GetAccount((int)trackerRec.EntityID);
+                        }
+                        break;
+                    case Enums.MSGType.Organization:
+                        //Organization
+                        if ((trackerRec.EntityID.HasValue))
+                        {
+                            OrgAcctEntityContent = _fortuneContent.GetOrganization((int)trackerRec.EntityID);
+                        }
+                        break;
+                }
+
+             
+                if ((string.IsNullOrEmpty(OrgAcctEntityContent))
+                        || (OrgAcctEntityContent.Contains("Error"))
+                            || (OrgAcctEntityContent.Contains("{\"Account\":[]}"))
+                               || (OrgAcctEntityContent.Contains("{\"Organization\":[]}"))
+                    )
+                      {
+
+                          //error message
+                          message = String.Format("Fail to retrieve content for {0} . {1}}", msgType, OrgAcctEntityContent);
+
+                          _logger.LogError("{0} - Tracker status was updated with errors. MsgID: {1} Message: {2}", nameof(AddFortuneEntityContent), trackerRec.MSGID, message);
+                          _tracker.UpdateActionStatus(trackerRec.MSGID, (int)Enums.Action.UnProcessed, message);
+
+                          hasSaved = false;
+                      }
+                      else
+                      {
+
+
+                    //Add to content table
+                    var jsonMessage = OrgAcctEntityContent.Replace(@"\", "").Replace(@"""[", "[").Replace(@"]""", "]");
+
+
+                    var contentModel = new MSG_ContentModel
+                    {
+                        MSGID = trackerRec.MSGID,
+                        Content = jsonMessage
+                    };
+
+                    //map to table
+                    var contentToDb = _mapper.Map<MSG_Content>(contentModel);
+                    _content.AddContent(contentToDb);
+
+
+
+                    //Message
+                    message = String.Format("{0} successfully added.", entityType);
+                    _logger.LogInformation("{0} - Tracker status was updated successfully for {1}. MsgID: {2}", nameof(AddFortuneEntityContent), trackerRec.EntityType, trackerRec.MSGID);
+
+                    //update tracker action status
+                    _tracker.UpdateActionStatus(trackerRec.MSGID, (int)Enums.Action.Processed, null);
+
+                    hasSaved = true;
+                }
+
+                return hasSaved;
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format(CultureInfo.CurrentCulture, "{0} \n\n Exception:\n {1}.\n\n Inner Exception: {2}. \n\nStackTrace:\n{3}", nameof(AddEntityContentAsync), ex.Message, ex.InnerException, ex.StackTrace);
+
+                _logger.LogError("{0} \n\n Exception:\n {1}.\n StackTrace:\n{2}", nameof(EntityContent), ex.InnerException, ex.StackTrace);
+
                 return hasSaved = false;
 
             }

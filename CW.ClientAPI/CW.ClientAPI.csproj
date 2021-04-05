@@ -8,6 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <Features>IOperation</Features>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <UserSecretsId>ed5ecb48-03e8-44dc-b682-e38c7a7c80b8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -80,11 +81,6 @@
   <ItemGroup>
     <ProjectReference Include="..\CW.ClientLibrary\CW.ClientLibrary.csproj" />
     <ProjectReference Include="..\CW.Library\CW.Library.csproj" />
-  </ItemGroup>
-
- 
-  <ItemGroup>
-    <Folder Include="DbContexts\" />
   </ItemGroup>
 
   

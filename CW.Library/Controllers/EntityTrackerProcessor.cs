@@ -159,7 +159,7 @@ namespace CW.Library.Controllers
             {
                 case "Client":
                     //client
-                    urlString = string.Format("{0}clients/{1}", baseUrl, entityId);
+                    urlString = string.Format("{0}clients/?clientID={1}", baseUrl, entityId);
                     break;
 
                 case "ClientPhoto":
@@ -175,6 +175,10 @@ namespace CW.Library.Controllers
                 case "ClientTrackUsage":
                     //client TrackUsage
                     urlString = string.Format("{0}clienttrackusage/{1}", baseUrl, entityId);
+                    break;
+                case "User":
+                    //User
+                    urlString = string.Format("{0}users/?userID={1}", baseUrl, entityId);
                     break;
             }
 

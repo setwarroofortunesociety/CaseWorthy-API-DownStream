@@ -78,11 +78,8 @@ namespace CW.ClientLibrary.Services.MessageTracker
             photo.WriteOrgGroupID    = clientImage.WriteOrgGroupID;
             photo.CreatedFormID      = clientImage.CreatedFormID;
             photo.LastModifiedFormID = clientImage.LastModifiedFormID;
-            photo.ImageFileBinary    = clientImage.ImageFileBinary;
+            photo.ImageBase64        = clientImage.ImageBase64;
             photo.LegacyID           = clientImage.LegacyID;
-
-            photo.ImageFileBinary = clientImage.ImageFileBinary;
-            
 
             _context.MSG_ClientPhotos.Update(photo);
 

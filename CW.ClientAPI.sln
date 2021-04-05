@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CW.ClientAPI", "CW.ClientAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CW.Library", "CW.Library\CW.Library.csproj", "{B3D43A7E-144A-4AA8-9BFB-DB13FBBFB284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CW.ClientLibrary", "CW.ClientLibrary\CW.ClientLibrary.csproj", "{64860233-535B-49BF-B578-47F698F063FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CW.ClientLibrary", "CW.ClientLibrary\CW.ClientLibrary.csproj", "{64860233-535B-49BF-B578-47F698F063FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

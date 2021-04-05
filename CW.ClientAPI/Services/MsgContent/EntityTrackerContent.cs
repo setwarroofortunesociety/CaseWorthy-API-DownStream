@@ -52,7 +52,7 @@ namespace CW.ClientAPI.Services.MsgContent
 
             _logger.LogInformation("{0} - PROCESSING data for IntervalID: {1} ....", nameof(AddEntityTrackerContentAsync),intervalID);
 
-            //restful call to get the client photo
+            //restful call to get the Entity
             var trackerContent = await EntityTrackerProcessor.GetEntityContent(clientFactory, url);
 
              //Null or empty
