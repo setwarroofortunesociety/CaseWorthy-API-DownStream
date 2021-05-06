@@ -140,14 +140,14 @@ namespace CW.ClientLibrary.Services.MessageTracker
 
 
             //get max end date
-            DateTime maxEnDateTime = GetMaxEndDate();
+            DateTime maxEnDateTime = GetIntervalMaxDateTime();
 
             //get interval start date
             DateTime startDateTime = IntervalHelper.ValidateIntervalStartDate(maxEnDateTime);
 
             //end date is defaulted to now
             DateTime endDateTime = DateTime.UtcNow;
-
+            
 
             //if the start/end date are not null
             if (!((startDateTime == DateTime.MinValue) && (endDateTime == DateTime.MinValue)))
@@ -173,7 +173,7 @@ namespace CW.ClientLibrary.Services.MessageTracker
         {
 
             //check if pending status exist
-            bool hasPendingStatus = PendingStautsExists();
+            bool hasPendingStatus = GetIntervalPendingStatus();
 
             if (hasPendingStatus == false)
             {
@@ -186,6 +186,7 @@ namespace CW.ClientLibrary.Services.MessageTracker
                       .OrderBy(c => c.StartDateTime)
                       .ToList();
 
+
             return result;
         }
 
@@ -193,15 +194,14 @@ namespace CW.ClientLibrary.Services.MessageTracker
         /// Get the Max End Date Time of all intervals
         /// </summary>
         /// <returns>Max End Date Time</returns>
-        private DateTime GetMaxEndDate()
+        public DateTime GetIntervalMaxDateTime()
         {
 
             try
             {
-                //return exception if no max end date
-                var result = _context.MSG_Intervals.AsQueryable()
-                                    .Select(m => m.EndDateTime)
-                                    .Max();
+                DateTime result = _context.VW_Interval_MaxDateTime.AsQueryable()
+                               .Select(m => m.EndDateTime)
+                               .FirstOrDefault();
 
                 return result;
             }
@@ -216,10 +216,14 @@ namespace CW.ClientLibrary.Services.MessageTracker
         /// Check if a pending interval exists
         /// </summary>
         /// <returns>true, false</returns>
-        private bool PendingStautsExists()
+        public bool GetIntervalPendingStatus()
         {
 
-            var result = _context.MSG_Intervals.Any(i => i.Status == (int)Enums.Status.Pending);
+            // var result = _context.MSG_Intervals.Any(i => i.Status == (int)Enums.Status.Pending);
+
+            bool result = _context.VW_Interval_HasPendingStatus.AsQueryable()
+                              .Select(m => m.IsPending)
+                              .FirstOrDefault();
 
             return result;
 

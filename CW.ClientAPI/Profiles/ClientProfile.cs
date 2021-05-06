@@ -123,6 +123,7 @@ namespace CW.ClientAPI.Profiles
 
             #endregion
 
+          
             #region Fortune Content
 
             CreateMap<CW.ClientLibrary.Data.FSP_CW_FHIR_Account_Fetch, FSP_CW_FHIR_Account_Fetch_Model>()

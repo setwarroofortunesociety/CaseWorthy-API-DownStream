@@ -78,10 +78,10 @@ namespace CW.ClientAPI
             }
             else if (_env.IsStaging())
             {
-                uriString = Configuration.GetSection("ProdCaseWorthySettings:AppEndPoint:ETL").Value;
-                dbString = Configuration.GetSection("ProdCaseWorthySettings:Data:FIX").Value;
-                accessKey = Configuration.GetSection("ProdCaseWorthySettings:SecurityAccess:AccessKey").Value;
-                secretKey = Configuration.GetSection("ProdCaseWorthySettings:SecurityAccess:SecretKey").Value;
+                uriString = Configuration.GetSection("ETLCaseWorthySettings:AppEndPoint:ETL").Value;
+                dbString = Configuration.GetSection("ETLCaseWorthySettings:Data:FIX_DEV").Value;
+                accessKey = Configuration.GetSection("ETLCaseWorthySettings:SecurityAccess:AccessKey").Value;
+                secretKey = Configuration.GetSection("ETLCaseWorthySettings:SecurityAccess:SecretKey").Value;
             }
 
                 //functionality to inject IOptions<T?
@@ -170,16 +170,23 @@ namespace CW.ClientAPI
                 app.UseDeveloperExceptionPage();
 
             }
+            else if (env.IsStaging())
+            {
+                logger.LogInformation("In Staging environment");
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+
+            }
             else if (env.IsProduction())
             {
                 logger.LogInformation("In Production environment");
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
-                
+
             }
             else
             {
-                logger.LogInformation("Not Devolpment or Production environment");
+                logger.LogInformation("Not Devolpment, Staging or Production environment");
             }
 
             //add middle ware for errors

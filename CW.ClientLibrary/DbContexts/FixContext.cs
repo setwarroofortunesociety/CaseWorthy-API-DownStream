@@ -22,6 +22,11 @@ namespace CW.ClientLibrary.DbContexts
         public virtual DbSet<MSG_Content> MSG_Contents { get; set; }
         public virtual DbSet<ClientPhoto> MSG_ClientPhotos { get; set; }
 
+        //View
+        public virtual DbSet<VW_Interval_MaxDateTime> VW_Interval_MaxDateTime { get; set; }
+        public virtual DbSet<VW_Interval_HasPendingStatus> VW_Interval_HasPendingStatus { get; set; }
+
+
         //Store Procedures
         public virtual DbSet<FSP_CW_FHIR_Organization_Fetch> MSG_Organization { get; set; }
         public virtual DbSet<FSP_CW_FHIR_Account_Fetch> MSG_Account { get; set; }
@@ -30,6 +35,28 @@ namespace CW.ClientLibrary.DbContexts
         {
             //specify default schema
             //modelBuilder.HasDefaultSchema("cw");
+
+
+            modelBuilder.Entity<VW_Interval_MaxDateTime>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("Interval_MaxDateTime", "cw");
+
+                entity.Property(e => e.EndDateTime)
+                .HasColumnType("datetime");
+
+            });
+
+            modelBuilder.Entity<VW_Interval_HasPendingStatus>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("Interval_HasPendingStatus", "cw");
+
+                entity.Property(e => e.IsPending).HasColumnType("bool");
+
+            });
 
             modelBuilder.Entity<MSG_Content>(entity =>
             {

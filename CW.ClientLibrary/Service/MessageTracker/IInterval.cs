@@ -15,12 +15,17 @@ namespace CW.ClientLibrary.Services.MessageTracker
 
         MSG_Interval GetInterval(Int64 intervalID);
 
+        DateTime GetIntervalMaxDateTime();
+
+        bool GetIntervalPendingStatus();
+
         IEnumerable<MSG_Interval> GetIntervalByStatusType(SearchParameters intervalParameters);
 
         IEnumerable<MSG_Interval> GetIntervalsToProcess();
         void AddInterval(MSG_Interval interval);
 
         void UpdateStatus(Int64 intervalId,int intervalStatus);
+
 
        // bool Save();
     }
